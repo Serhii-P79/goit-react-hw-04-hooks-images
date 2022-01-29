@@ -9,12 +9,13 @@ export function Modal({ onClose, children, isLoader = false }) {
   useEffect(() => {
     if (!isLoader) {
       window.addEventListener('keydown', handleKeyDown);
-      console.log("window.addEventListener('keydown', handleKeyDown)");
+      //  console.log("window.addEventListener('keydown', handleKeyDown)");
       return () => {
         window.removeEventListener('keydown', handleKeyDown);
-        console.log("window.removeEventListener('keydown', handleKeyDown)");
+        //   console.log("window.removeEventListener('keydown', handleKeyDown)");
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleKeyDown(e) {

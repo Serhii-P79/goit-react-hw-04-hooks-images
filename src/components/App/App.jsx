@@ -83,6 +83,7 @@ export function App() {
       toggleModal();
     }
     isImgUrl.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgUrl]);
 
   function toggleModal() {
