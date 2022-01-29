@@ -92,8 +92,10 @@ export function App() {
 
   function updSearchQuery(e, searchQuery) {
     e.preventDefault();
-    setSearchQuery(searchQuery);
-    setPage(1);
+    if (searchQuery) {
+      setSearchQuery(searchQuery);
+      setPage(1);
+    }
   }
 
   function nextPageRequest() {
