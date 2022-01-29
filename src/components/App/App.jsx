@@ -18,7 +18,7 @@ export function App() {
   const isImgUrl = useRef(false);
 
   useEffect(() => {
-    if (isSearchQuery.current) {
+    if (isSearchQuery.current && searchQuery) {
       async function getImages() {
         setStatus(Status.PENDING);
         searchObject.searchPhrase = searchQuery;
