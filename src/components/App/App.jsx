@@ -12,7 +12,7 @@ export function App() {
   const [imgUrl, setImgUrl] = useState('');
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState(Status.IDLE);
-
+  const [totalHits, setTotalHits] = useState(0);
   const isSearchQuery = useRef(false);
   const isLoadMore = useRef(false);
   const isImgUrl = useRef(false);
@@ -25,6 +25,8 @@ export function App() {
         searchObject.safesearch = false;
         try {
           const data = await getPhoto(searchObject);
+          // console.log(data);
+          setTotalHits(data.totalHits);
           setImages([
             ...data.hits.map(({ id, webformatURL, largeImageURL }) => ({
               id,
@@ -49,6 +51,7 @@ export function App() {
         searchObject.page = page;
         try {
           const data = await getPhoto(searchObject);
+          // console.log(data);
           setImages(prevST => {
             return page === 1
               ? [
@@ -102,18 +105,24 @@ export function App() {
     setPage(pS => pS + 1);
   }
 
+  const renderLoader = status === Status.PENDING || status === Status.PENDINGD;
+  const renderGallery = status === Status.RESOLVE || status === Status.PENDINGD;
+  const renderButtonLoadMore =
+    images.length !== 0 && totalHits > page * searchObject.per_page;
+
+  // console.log('totalHits - ', totalHits);
+  // console.log('page * searchObject.per_page - ', page * searchObject.per_page);
+
   return (
     <div className="App">
       <Searchbar onSubmit={updSearchQuery} />
-      {(status === Status.PENDING || status === Status.PENDINGD) && (
+      {renderLoader && (
         <Modal onClose={() => {}} isLoader={true}>
           <Loader />
         </Modal>
       )}
-      {(status === Status.RESOLVE || status === Status.PENDINGD) && (
-        <ImageGallery images={images} onClick={setImgUrl} />
-      )}
-      {images.length !== 0 && <Button onClick={nextPageRequest} />}
+      {renderGallery && <ImageGallery images={images} onClick={setImgUrl} />}
+      {renderButtonLoadMore && <Button onClick={nextPageRequest} />}
       {showModal && (
         <Modal onClose={toggleModal}>
           <img src={imgUrl} alt="" />
