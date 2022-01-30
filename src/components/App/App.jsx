@@ -18,10 +18,8 @@ export function App() {
 
   const isImgUrl = useRef(false);
 
-  const isLoadImages = useRef(false);
-
   useEffect(() => {
-    if (isLoadImages.current) {
+    if (searchQuery) {
       async function getImages() {
         if (page > 1) {
           setStatus(Status.PENDINGD);
@@ -63,7 +61,6 @@ export function App() {
       }
       getImages();
     }
-    isLoadImages.current = true;
   }, [searchQuery, page]);
 
   useEffect(() => {
