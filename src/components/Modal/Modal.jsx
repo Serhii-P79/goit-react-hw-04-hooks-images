@@ -5,7 +5,7 @@ import './Modal.scss';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export function Modal({ onClose, children, isLoader = false }) {
+export function Modal({ onClose = () => {}, children, isLoader = false }) {
   useEffect(() => {
     if (!isLoader) {
       window.addEventListener('keydown', handleKeyDown);
@@ -40,6 +40,6 @@ export function Modal({ onClose, children, isLoader = false }) {
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   isLoader: PropTypes.bool,
 };

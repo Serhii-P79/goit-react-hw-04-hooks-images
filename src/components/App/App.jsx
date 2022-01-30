@@ -96,7 +96,7 @@ export function App() {
     <div className="App">
       <Searchbar onSubmit={updSearchQuery} />
       {renderLoader && (
-        <Modal onClose={() => {}} isLoader={true}>
+        <Modal isLoader={true}>
           <Loader />
         </Modal>
       )}
