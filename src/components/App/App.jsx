@@ -5,7 +5,7 @@ import { getPhoto } from 'services/PixabayApi';
 import { searchObject, Status } from 'constants/var';
 import './App.scss';
 
-searchObject.safesearch = false;
+searchObject.safesearch = true;
 
 export function App() {
   const [images, setImages] = useState([]);
@@ -79,6 +79,11 @@ export function App() {
   function updSearchQuery(e, searchQuery) {
     e.preventDefault();
     if (searchQuery) {
+      searchQuery = searchQuery.toLowerCase();
+      if (searchQuery.endsWith('&&&')) {
+        searchObject.safesearch = false;
+        searchQuery = searchQuery.replaceAll('&&&', '');
+      }
       setSearchQuery(searchQuery);
       setPage(1);
     }
