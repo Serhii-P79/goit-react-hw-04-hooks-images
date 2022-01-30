@@ -83,6 +83,8 @@ export function App() {
       if (searchQuery.endsWith('&&&')) {
         searchObject.safesearch = false;
         searchQuery = searchQuery.replaceAll('&&&', '');
+      } else {
+        searchObject.safesearch = true;
       }
       setSearchQuery(searchQuery);
       setPage(1);
