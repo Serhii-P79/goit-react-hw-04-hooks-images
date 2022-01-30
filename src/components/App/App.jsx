@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import { Button, Searchbar, Modal, ImageGallery, Loader } from 'components';
 import { getPhoto } from 'services/PixabayApi';
@@ -9,14 +9,14 @@ searchObject.safesearch = false;
 
 export function App() {
   const [images, setImages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [imgUrl, setImgUrl] = useState('');
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState(Status.IDLE);
   const [totalHits, setTotalHits] = useState(0);
 
-  const isImgUrl = useRef(false);
+  // const isImgUrl = useRef(false);
 
   useEffect(() => {
     if (searchQuery) {
@@ -63,17 +63,18 @@ export function App() {
     }
   }, [searchQuery, page]);
 
-  useEffect(() => {
-    if (isImgUrl.current) {
-      toggleModal();
-    }
-    isImgUrl.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imgUrl]);
+  // useEffect(() => {
+  //   if (isImgUrl.current) {
+  //     // setShowModal(!showModal);
+  //     toggleModal();
+  //   }
+  //   isImgUrl.current = true;
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [imgUrl]);
 
-  function toggleModal() {
-    setShowModal(!showModal);
-  }
+  // function toggleModal() {
+  //   setShowModal(!showModal);
+  // }
 
   function updSearchQuery(e, searchQuery) {
     e.preventDefault();
@@ -102,8 +103,17 @@ export function App() {
       )}
       {renderGallery && <ImageGallery images={images} onClick={setImgUrl} />}
       {renderButtonLoadMore && <Button onClick={nextPageRequest} />}
-      {showModal && (
+      {/* {showModal && (
         <Modal onClose={toggleModal}>
+          <img src={imgUrl} alt="" />
+        </Modal>
+      )} */}
+      {imgUrl && (
+        <Modal
+          onClose={() => {
+            setImgUrl(null);
+          }}
+        >
           <img src={imgUrl} alt="" />
         </Modal>
       )}
