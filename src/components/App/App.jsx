@@ -5,6 +5,8 @@ import { getPhoto } from 'services/PixabayApi';
 import { searchObject, Status } from 'constants/var';
 import './App.scss';
 
+searchObject.safesearch = false;
+
 export function App() {
   const [images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -13,45 +15,28 @@ export function App() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState(Status.IDLE);
   const [totalHits, setTotalHits] = useState(0);
-  const isSearchQuery = useRef(false);
-  const isLoadMore = useRef(false);
+
   const isImgUrl = useRef(false);
 
+  const isLoadImages = useRef(false);
+
   useEffect(() => {
-    if (isSearchQuery.current && searchQuery) {
+    if (isLoadImages.current) {
       async function getImages() {
-        setStatus(Status.PENDING);
+        if (page > 1) {
+          setStatus(Status.PENDINGD);
+        } else {
+          setStatus(Status.PENDING);
+        }
+
         searchObject.searchPhrase = searchQuery;
-        searchObject.safesearch = false;
+
+        searchObject.page = page;
+
         try {
           const data = await getPhoto(searchObject);
           // console.log(data);
           setTotalHits(data.totalHits);
-          setImages([
-            ...data.hits.map(({ id, webformatURL, largeImageURL }) => ({
-              id,
-              webformatURL,
-              largeImageURL,
-            })),
-          ]);
-          setStatus(Status.RESOLVE);
-        } catch (eror) {
-          setStatus(Status.REJECTED);
-        }
-      }
-      getImages();
-    }
-    isSearchQuery.current = true;
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (isLoadMore.current) {
-      async function getImages() {
-        setStatus(Status.PENDINGD);
-        searchObject.page = page;
-        try {
-          const data = await getPhoto(searchObject);
-          // console.log(data);
           setImages(prevST => {
             return page === 1
               ? [
@@ -78,8 +63,8 @@ export function App() {
       }
       getImages();
     }
-    isLoadMore.current = true;
-  }, [page]);
+    isLoadImages.current = true;
+  }, [searchQuery, page]);
 
   useEffect(() => {
     if (isImgUrl.current) {
@@ -109,9 +94,6 @@ export function App() {
   const renderGallery = status === Status.RESOLVE || status === Status.PENDINGD;
   const renderButtonLoadMore =
     images.length !== 0 && totalHits > page * searchObject.per_page;
-
-  // console.log('totalHits - ', totalHits);
-  // console.log('page * searchObject.per_page - ', page * searchObject.per_page);
 
   return (
     <div className="App">
