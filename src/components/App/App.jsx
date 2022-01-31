@@ -22,13 +22,12 @@ export function App() {
     if (searchQuery) {
       async function getImages() {
         if (page > 1) {
-          setStatus(Status.PENDINGD);
+          setStatus(Status.PENDING_LOAD_MORE);
         } else {
           setStatus(Status.PENDING);
         }
 
         searchObject.searchPhrase = searchQuery;
-
         searchObject.page = page;
 
         try {
@@ -95,8 +94,10 @@ export function App() {
     setPage(pS => pS + 1);
   }
 
-  const renderLoader = status === Status.PENDING || status === Status.PENDINGD;
-  const renderGallery = status === Status.RESOLVE || status === Status.PENDINGD;
+  const renderLoader =
+    status === Status.PENDING || status === Status.PENDING_LOAD_MORE;
+  const renderGallery =
+    status === Status.RESOLVE || status === Status.PENDING_LOAD_MORE;
   const renderButtonLoadMore =
     images.length !== 0 && totalHits > page * searchObject.per_page;
 

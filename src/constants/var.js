@@ -21,7 +21,7 @@ export const searchObject = {
 export const Status = {
   IDLE: 'idle',
   PENDING: 'pending',
-  PENDINGD: 'pendingd',
+  PENDING_LOAD_MORE: 'pendingd',
   RESOLVE: 'resolve',
   REJECTED: 'rejected',
 };
