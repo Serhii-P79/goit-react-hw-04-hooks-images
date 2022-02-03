@@ -104,11 +104,7 @@ export function App() {
   return (
     <div className="App">
       <Searchbar onSubmit={updSearchQuery} />
-      {renderLoader && (
-        <Modal isLoader={true}>
-          <Loader />
-        </Modal>
-      )}
+      {renderLoader && <Loader />}
       {renderGallery && <ImageGallery images={images} onClick={setImgUrl} />}
       {renderButtonLoadMore && <Button onClick={nextPageRequest} />}
       {/* {showModal && (
